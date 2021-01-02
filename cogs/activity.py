@@ -16,12 +16,14 @@ with open(f"./json/database.json", 'r') as file: # Get Bot Token
         db = json.load(file)['playersactivity']
 
 
+
 # Database Connection
 mydb = mysql.connector.connect(
     host=db['host'],
     user=db['user'],
     password=db['password'],
     database=db['database'])
+
 
 cursor = mydb.cursor()
 
@@ -61,7 +63,9 @@ class Activity(commands.Cog):
         self.client = client
         self.checkDB.start()
         self.giveroles.start()
-
+        self.set_discord_id.start()
+    
+    
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{Fore.RED}Activity cog Ready!')
@@ -164,6 +168,7 @@ class Activity(commands.Cog):
         if amount > len(activity_dic):
             amount = len(activity_dic)
 
+        member = self.client.get_user(468179605124153344)
         embed.set_author(name=f"Top {amount}.")
         for i in range(amount):
             try:
@@ -211,7 +216,13 @@ class Activity(commands.Cog):
 
         print("Database Cleaned!")
         mydb.commit()
-
+    
+    @tasks.loop(seconds = 600)
+    async def set_discord_id(self):
+        if not mydb.is_connected():
+                    mydb.connect()
+        set_all_discord_ids()
+    
     @tasks.loop(seconds=5)
     async def giveroles(self):
         if not mydb.is_connected():
