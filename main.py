@@ -8,7 +8,6 @@
 import discord
 import os
 import json
-from pydactyl import PterodactylClient
 from discord.ext import commands
 from colorama import init, Fore
 
