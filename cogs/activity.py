@@ -164,7 +164,6 @@ class Activity(commands.Cog):
         if amount > len(activity_dic):
             amount = len(activity_dic)
 
-        member = self.client.get_user(468179605124153344)
         embed.set_author(name=f"Top {amount}.")
         for i in range(amount):
             try:
