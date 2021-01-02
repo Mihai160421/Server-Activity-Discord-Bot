@@ -1,3 +1,10 @@
+#   Discord Bot for TF2 Romania
+#   Python Verison 3.9.1
+#   Discord Py Version 1.5.1
+#   Author: Mihái#0001   (Discord) / DiscordID : 468179605124153344
+#   Github : https://github.com/Mihai160421/TF2-Romania-Discord-Bot
+
+
 import discord
 import os
 import json
