@@ -157,7 +157,7 @@ class Activity(commands.Cog):
             embed.set_thumbnail(url=steam_profile_pic)
         else:
             if user == '':
-                embed.description = f"{ctx.author.name}. I could not find your profile. Maybe you haven't joined our servers in more than a month\nOr you haven't applied yet. Type `{ctx.command.prefix} apply [steamurl]`"
+                embed.description = f"{ctx.author.name}. I could not find your profile. Maybe you haven't joined our servers in more than a month\nOr you haven't applied yet. Type `{ctx.prefix} apply [steamurl]`"
             else:
                 embed.description = f"{ctx.author.name}. I could not find this user profile. Maybe he hasn't joined our servers in more than a month\n"
             embed.color = discord.Color.red()
