@@ -106,16 +106,16 @@ class Activity(commands.Cog):
                         embed.color = discord.Color.green()
                         mydb.commit()
                     elif 'no' in answer.content.lower():
-                        await ctx.send(f"{ctx.author.name}. At least you are honest. Come back when you have a steam account.")
+                        await ctx.send(f"`{ctx.author.name}`. At least you are honest. Come back when you have a steam account.")
                         return
                     else:
-                        await ctx.send(f"{ctx.author.name}. That's not a valid answer.")
+                        await ctx.send(f"`{ctx.author.name}`. That's not a valid answer.")
                         return
                 else:
-                    embed.description = f"Sorry but that Steam Profile is already associated with an Discord ID (<@{discord_id_list[0][1]}>). Contact a Manager for more information"
+                    embed.description = f"`{ctx.author.name}`. Sorry but that Steam Profile is already associated with an Discord ID (<@{discord_id_list[0][1]}>). Contact a Manager for more information"
                     embed.color = discord.Color.red()
             else:
-                embed.description = "Sorry but I can't find your SteamID in the database."
+                embed.description = f"`{ctx.author.name}`Sorry but I can't find your SteamID in the database."
                 embed.color = discord.Color.red()
 
 
