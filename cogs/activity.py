@@ -98,7 +98,7 @@ class Activity(commands.Cog):
                     try:
                         answer = await self.client.wait_for('message', timeout=60.0, check=check)
                     except asyncio.TimeoutError:
-                        await ctx.send(f"{ctx.author.name}. You haven't answer in time.")
+                        await ctx.send(f"{ctx.author.name}. You haven't answered in time.")
                         return
                     if 'yes' in answer.content.lower():
                         cursor.execute("UPDATE players_activity SET discord_id = '%s' WHERE steamid = '%s'" % (ctx.author.id, steamid3))
@@ -157,7 +157,7 @@ class Activity(commands.Cog):
             embed.set_thumbnail(url=steam_profile_pic)
         else:
             if user == '':
-                embed.description = f"{ctx.author.name}. I could not find your profile. Maybe you haven't joined our servers in more than a month\nOr you haven't applied yet. Type `{ctx.prefix} apply [steamurl]`"
+                embed.description = f"{ctx.author.name}. I could not find your profile. Maybe you haven't joined our servers in more than a month\nOr you haven't applied yet. Type `{ctx.prefix}apply [steamurl]`"
             else:
                 embed.description = f"{ctx.author.name}. I could not find this user profile. Maybe he hasn't joined our servers in more than a month\n"
             embed.color = discord.Color.red()
