@@ -118,7 +118,10 @@ class Utility(commands.Cog):
             await ctx.send(f"{ctx.author.name}, your discord id is **{ctx.author.id}**")
         else:
             await ctx.send(f"{ctx.author.name}, {user.name} discord id is **{user.id}**")
-
+    
+    @commands.command(aliases=[], description='Get Github Link', help='github')
+    async def github(self, ctx):
+        await ctx.send('https://github.com/Mihai160421/TF2-Romania-Discord-Bot')
 
 def setup(client):
     client.add_cog(Utility(client))
