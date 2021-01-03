@@ -80,7 +80,7 @@ class Activity(commands.Cog):
             steamid3 = extract_id_from_steamid3(get_steamid3(steamurl))
         except:
             embed.description = f"{ctx.author.name}. That's not a valid steam profile link.\nYour steam profile link must look something like `https://steamcommunity.com/id/NAME/`"
-            embed.color = discord.Color.green()
+            embed.color = discord.Color.red()
         else:
             if not mydb.is_connected():
                 mydb.connect()
@@ -93,18 +93,19 @@ class Activity(commands.Cog):
                     cursor.execute("UPDATE players_activity SET discord_id = '%s' WHERE steamid = '%s'" % (ctx.author.id, steamid3))
                     embed.description =f"Your Discord ID has been added to database.\nIf your activity is over **{round(float(minumum_activity / 3600), 2)}** hours, you will get your Giveaway Member role soon."
                     embed.color = discord.Color.green()
+                    mydb.commit()
                 else:
                     embed.description = f"Sorry but that Steam Profile is already associated with an Discord ID (<@{discord_id_list[0][1]}>). Contact a Manager for more information"
                     embed.color = discord.Color.red()
             else:
                 embed.description = "Sorry but I can't find your SteamID in the database."
                 embed.color = discord.Color.red()
-            mydb.commit()
+            
 
         await ctx.send(embed=embed)
 
 
-    @commands.command(alises=['prof'], description='Check server profile', help='profile (users)')
+    @commands.command(aliases=['prof'], description='Check server profile', help='profile (user)')
     async def profile(self, ctx, user: discord.Member = ''):
         if user == '':
             member = ctx.author
@@ -138,7 +139,7 @@ class Activity(commands.Cog):
             embed.add_field(name=':warning:Giveaway Ban', value=f'**{":x:Yes" if is_banned(member.roles) else ":white_check_mark:No"}**', inline=True)
             embed.set_thumbnail(url=steam_profile_pic)
         else:
-            if user == None:
+            if user == '':
                 embed.description = f"{ctx.author.name}. I could not find your profile. Maybe you haven't joined our servers in more than a month\nOr you haven't applied yet. Type `{ctx.command.prefix} apply [steamurl]`"
             else:
                 embed.description = f"{ctx.author.name}. I could not find this user profile. Maybe he hasn't joined our servers in more than a month\n"
@@ -167,14 +168,12 @@ class Activity(commands.Cog):
         if amount > len(activity_dic):
             amount = len(activity_dic)
 
-        member = self.client.get_user(468179605124153344)
         embed.set_author(name=f"Top {amount}.")
         for i in range(amount):
             try:
                 if i == 0:
                     member = self.client.get_user(int(activity_dic[i][0]))
                     activity = f"{round(activity_dic[i][1] / 3600, 2)} hours"
-
                     embed.add_field(name=f":first_place:Top {i+1}", value=f"{member.name} -- `{activity}`", inline=False)
                 elif i == 1:
                     member = self.client.get_user(int(activity_dic[i][0]))
