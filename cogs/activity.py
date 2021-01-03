@@ -96,7 +96,7 @@ class Activity(commands.Cog):
                         return m.author == ctx.author and m.channel == ctx.channel
                     await ctx.send(f"{ctx.author.mention}\n```\nAre you sure this is your steam account? (Yes/No)\n[WARNING] Impersonating steam accounts others than yours will lead to ban!\n```")
                     try:
-                        answer = await self.client.wait_for('message', timout=60.0, check=check)
+                        answer = await self.client.wait_for('message', timeout=60.0, check=check)
                     except asyncio.TimeoutError:
                         await ctx.send(f"{ctx.author.name}. You haven't answer in time.")
                         return
