@@ -5,3 +5,6 @@
 
 - Change Database Connection -> json/database.json
 - Change Discord Bot Token -> json/bot.json
+
+
+! pip modules : discord.py , colorama
