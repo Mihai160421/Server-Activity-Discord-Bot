@@ -69,7 +69,7 @@ class Administrator(commands.Cog):
         description = f"Prefix changed to **`{prefix}`**\nType **`{prefix} help`**"
 
         await ctx.send(embed = discord.Embed(description = description, color = discord.Color.gold()))
-
+        bot_info["prefix"] = prefix
         with open(f"./json/bot.json", 'w') as file: # Get Bot Token
             json.dump(bot_info, file, indent=1)
 
