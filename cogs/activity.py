@@ -128,14 +128,14 @@ class Activity(commands.Cog):
             steam_profile_pic = data['response']['players'][0]['avatarfull']
             steam_id_2 = group.as_steam2
             steam_profile_url = group.community_url
-            total_activity = [day[2] for day in activity_list]
+            month_activity = sum([day[2] for day in activity_list])
             date_list = [day[1] for day in activity_list]
             embed.set_author(name=f"{member.name}'s profile.")
             embed.description = f"**[Steam Profile]({steam_profile_url})**"
             embed.add_field(name=':label:SteamID', value=f'**`{steam_id_2}`**', inline=False)
             embed.add_field(name=':bust_in_silhouette:Steam Name', value = f'**{steam_name}**', inline=False)
             embed.add_field(name=':clock4:Last activity', value=f'**{max(date_list)}**', inline=True)
-            embed.add_field(name=':hourglass_flowing_sand:Activity past month', value=f'**{round(max(total_activity) / 3600, 2)} hours.**', inline=True)
+            embed.add_field(name=':hourglass_flowing_sand:Activity past month', value=f'**{round(month_activity / 3600, 2)} hours.**', inline=True)
             embed.add_field(name=':warning:Giveaway Ban', value=f'**{":x:Yes" if is_banned(member.roles) else ":white_check_mark:No"}**', inline=True)
             embed.set_thumbnail(url=steam_profile_pic)
         else:
@@ -217,7 +217,7 @@ class Activity(commands.Cog):
         print("Database Cleaned!")
         mydb.commit()
     
-    @tasks.loop(seconds = 600)
+    @tasks.loop(seconds = 1800)
     async def set_discord_id(self):
         if not mydb.is_connected():
                     mydb.connect()
