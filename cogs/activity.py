@@ -63,8 +63,8 @@ class Activity(commands.Cog):
         self.checkDB.start()
         self.giveroles.start()
         self.set_discord_id.start()
-    
-    
+
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{Fore.RED}Activity cog Ready!')
@@ -90,17 +90,34 @@ class Activity(commands.Cog):
             discord_id_list = cursor.fetchall()
             if discord_id_list:
                 if discord_id_list[0][1] is None:
-                    cursor.execute("UPDATE players_activity SET discord_id = '%s' WHERE steamid = '%s'" % (ctx.author.id, steamid3))
-                    embed.description =f"Your Discord ID has been added to database.\nIf your activity is over **{round(float(minumum_activity / 3600), 2)}** hours, you will get your Giveaway Member role soon."
-                    embed.color = discord.Color.green()
-                    mydb.commit()
+
+
+                    def check(m):
+                        return m.author == ctx.author and m.channel == ctx.channel
+                    await ctx.send(f"{ctx.author.mention}\n```\nAre you sure this is your steam account? (Yes/No)\n[WARNING] Impersonating steam accounts others than yours will lead to ban!\n```")
+                    try:
+                        answer = await self.client.wait_for('message', timout=60.0, check=check)
+                    except asyncio.TimeoutError:
+                        await ctx.send(f"{ctx.author.name}. You haven't answer in time.")
+                        return
+                    if 'yes' in answer.content.lower():
+                        cursor.execute("UPDATE players_activity SET discord_id = '%s' WHERE steamid = '%s'" % (ctx.author.id, steamid3))
+                        embed.description =f"Your Discord ID has been added to database.\nIf your activity is over **{round(float(minumum_activity / 3600), 2)}** hours, you will get your Giveaway Member role soon."
+                        embed.color = discord.Color.green()
+                        mydb.commit()
+                    elif 'no' in answer.content.lower():
+                        await ctx.send(f"{ctx.author.name}. At least you are honest. Come back when you have a steam account.")
+                        return
+                    else:
+                        await ctx.send(f"{ctx.author.name}. That's not a valid answer.")
+                        return
                 else:
                     embed.description = f"Sorry but that Steam Profile is already associated with an Discord ID (<@{discord_id_list[0][1]}>). Contact a Manager for more information"
                     embed.color = discord.Color.red()
             else:
                 embed.description = "Sorry but I can't find your SteamID in the database."
                 embed.color = discord.Color.red()
-            
+
 
         await ctx.send(embed=embed)
 
