@@ -8,7 +8,6 @@ from discord.ext import commands, tasks
 from steam.steamid import SteamID
 from discord.utils import get
 from colorama import init, Fore
-from discord.utils import get
 
 init()
 
