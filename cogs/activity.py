@@ -31,6 +31,15 @@ giveaway_role_name = 'Giveaway Member'
 vip_role_name = 'VIP'
 minumum_activity = 36000
 
+def time_conv(seconds):
+    days = seconds // 86400
+    seconds -= days * 86400
+    hours = seconds // 3600
+    seconds -= hours * 3600
+    minutes = seconds // 60
+
+    return f"{days} days, {hours} hours and {minutes} minutes"
+
 def set_all_discord_ids():
     cursor.execute("SELECT * from players_activity WHERE discord_id !='None'")
     database_list = cursor.fetchall()
@@ -146,13 +155,14 @@ class Activity(commands.Cog):
             steam_id_2 = group.as_steam2
             steam_profile_url = group.community_url
             month_activity = sum([day[2] for day in activity_list])
+            act = time_conv(month_activity) # This change
             date_list = [day[1] for day in activity_list]
             embed.set_author(name=f"{member.name}'s profile.")
             embed.description = f"**[Steam Profile]({steam_profile_url})**"
             embed.add_field(name=':label:SteamID', value=f'**`{steam_id_2}`**', inline=False)
             embed.add_field(name=':bust_in_silhouette:Steam Name', value = f'**{steam_name}**', inline=False)
             embed.add_field(name=':clock4:Last activity', value=f'**{max(date_list)}**', inline=True)
-            embed.add_field(name=':hourglass_flowing_sand:Activity past month', value=f'**{round(month_activity / 3600, 2)} hours.**', inline=True)
+            embed.add_field(name=':hourglass_flowing_sand:Activity past month', value=f'**{act}**', inline=True)
             embed.add_field(name=':warning:Giveaway Ban', value=f'**{":x:Yes" if is_banned(member.roles) else ":white_check_mark:No"}**', inline=True)
             embed.set_thumbnail(url=steam_profile_pic)
         else:
@@ -190,19 +200,19 @@ class Activity(commands.Cog):
             try:
                 if i == 0:
                     member = self.client.get_user(int(activity_dic[i][0]))
-                    activity = f"{round(activity_dic[i][1] / 3600, 2)} hours"
+                    activity = time_conv(activity_dic[i][1])
                     embed.add_field(name=f":first_place:Top {i+1}", value=f"{member.name} -- `{activity}`", inline=False)
                 elif i == 1:
                     member = self.client.get_user(int(activity_dic[i][0]))
-                    activity = f"{round(activity_dic[i][1] / 3600, 2)} hours"
+                    activity = time_conv(activity_dic[i][1])
                     embed.add_field(name=f":second_place:Top {i+1}", value=f"{member.name} -- `{activity}`", inline=False)
                 elif i == 2:
                     member = self.client.get_user(int(activity_dic[i][0]))
-                    activity = f"{round(activity_dic[i][1] / 3600, 2)} hours"
+                    activity = time_conv(activity_dic[i][1])
                     embed.add_field(name=f":third_place:Top {i+1}", value=f"{member.name} -- `{activity}`", inline=False)
                 else:
                     member = self.client.get_user(int(activity_dic[i][0]))
-                    activity = f"{round(activity_dic[i][1] / 3600, 2)} hours"
+                    activity = time_conv(activity_dic[i][1])
                     embed.add_field(name=f"Top {i+1}", value=f"{member.name} -- `{activity}`", inline=False)
             except Exception as e:
                 print(e)
@@ -231,13 +241,13 @@ class Activity(commands.Cog):
 
         print("Database Cleaned!")
         mydb.commit()
-    
+
     @tasks.loop(seconds = 1800)
     async def set_discord_id(self):
         if not mydb.is_connected():
                     mydb.connect()
         set_all_discord_ids()
-    
+
     @tasks.loop(seconds=5)
     async def giveroles(self):
         if not mydb.is_connected():
