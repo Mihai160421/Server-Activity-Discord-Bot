@@ -280,7 +280,7 @@ class Activity(commands.Cog):
                                 await member.remove_roles(guild.get_role(role_remove))
 
                     except Exception as e:
-                        print(e)
+                        pass
 
             else:
                 for guild in self.client.guilds:
