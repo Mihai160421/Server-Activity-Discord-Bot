@@ -7,4 +7,4 @@
 - Change Discord Bot Token -> json/bot.json
 
 
-! pip modules : discord.py , colorama
+! pip modules : discord.py, colorama, mysql-connector, steam, aiohttp
