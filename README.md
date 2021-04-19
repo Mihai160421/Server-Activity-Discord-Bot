@@ -1,6 +1,4 @@
-# TF2 Romania Discord Bot
-
-- http://www.tf2.ro/
+# Activity Discord Bot
 
 
 - Change Database Connection -> json/database.json
